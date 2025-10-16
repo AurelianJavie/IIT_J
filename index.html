@@ -1,5 +1,3 @@
-<html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,33 +49,6 @@
 
     .btn {
       display: inline-block;
-66
-      transform: translateY(-2px);
-67
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-68
-    }
-69
-​
-70
-    /* Navigation */
-71
-    .nav {
-72
-      display: flex;
-73
-      justify-content: center;
-74
-      margin-bottom: 20px;
-CSS
-CSS Options
-1
-JS
-
-JS Options
-1
-​
-
       padding: 12px 30px;
       background: #ff006e;
       color: white;
@@ -227,6 +198,8 @@ JS Options
       border-radius: 4px;
       font-size: 0.9em;
       transition: background 0.3s;
+      cursor: pointer;
+      border: none;
     }
 
     .diary__entry-button:hover {
@@ -242,25 +215,31 @@ JS Options
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 0, 0, 0.9);
       overflow: hidden;
     }
 
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .modal-content {
-      background: white;
-      margin: 20px auto;
+      background: #2b2b2b;
+      margin: 0;
       padding: 0;
       width: 95%;
-      height: 90vh;
+      height: 95vh;
       border-radius: 8px;
       display: flex;
       flex-direction: column;
-      max-width: 1000px;
+      max-width: 1400px;
     }
 
     .modal-header {
       padding: 15px 20px;
-      background: #667eea;
+      background: #1a1a1a;
       color: white;
       display: flex;
       justify-content: space-between;
@@ -270,32 +249,47 @@ JS Options
 
     .modal-header h3 {
       margin: 0;
+      font-size: 1.2em;
     }
 
     .close {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: bold;
       cursor: pointer;
       transition: color 0.3s;
-    }
-
-    .close:hover {
-      color: #ddd;
-    }
-
-    .pdf-viewer {
-      flex: 1;
-      overflow: auto;
-      background: #f0f0f0;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 50%;
     }
 
-    .pdf-placeholder {
-      text-align: center;
-      color: #999;
-      padding: 40px;
+    .close:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .pdf-viewer-container {
+      flex: 1;
+      overflow: hidden;
+      background: #3a3a3a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    #pdfViewer {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #3a3a3a;
+    }
+
+    .pdf-loading {
+      position: absolute;
+      color: white;
+      font-size: 1.2em;
     }
 
     /* Projects Section */
@@ -404,6 +398,12 @@ JS Options
       .nav__items {
         gap: 15px;
       }
+
+      .modal-content {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+      }
     }
   </style>
 </head>
@@ -449,158 +449,42 @@ JS Options
     </section>
 
     <!-- ***** Diary Entries ***** -->
+<section class="diary" id="diary">
+  <div class="diary__entries">
+    <div class="diary__entry-card">
+      <div class="diary__entry-day">Day 1</div>
+      <div class="diary__entry-summary">Example training summary for Day 1.</div>
+      <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day1')">Read Full Entry</a>
+    </div>
+  </div>
+<section class="diary" id="diary">
+  <div class="diary__entries">
+    <div class="diary__entry-card">
+      <div class="diary__entry-day">Day 1</div>
+      <div class="diary__entry-summary">Example training summary for Day 1.</div>
+      <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day1')">Read Full Entry</a>
+    </div>
+  </div>
+</section>    
 
-    <section class="diary" id="diary">
-      <div class="row">
-        <h2>Daily Diary Entries</h2>
-        <div class="diary__entries">
+<!-- Modal -->
+<div id="pdfModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Diary Entry</h3>
+      <span class="close" onclick="closePDF()">&times;</span>
+    </div>
+    <div class="pdf-viewer">
+      <iframe id="pdfFrame" src="" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+  </div>
+</div>
 
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 1</div>
-            <div class="diary__entry-date">Date: 18/6/25</div>
-            <div class="diary__entry-title">Introduction & Orientation</div>
-            <div class="diary__entry-summary">
-              Your Day 1 summary goes here. Describe what you learned, accomplished, and felt during your first day of training.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('Diary/Training Day 1.pdf')">Read Full Entry</a>
-          </div>
 
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 2</div>
-            <div class="diary__entry-date">Date: 20/6/25</div>
-            <div class="diary__entry-title">Training Day 2</div>
-            <div class="diary__entry-summary">
-              Your Day 2 summary goes here. Share your experiences, learnings, and progress from today's training session.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('Diary/Training Day 2.pdf')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 3</div>
-            <div class="diary__entry-date">Date: 23/6/25</div>
-            <div class="diary__entry-title">Training Day 3</div>
-            <div class="diary__entry-summary">
-              Your Day 3 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day3')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 4</div>
-            <div class="diary__entry-date">Date: 25/6/25</div>
-            <div class="diary__entry-title">Training Day 4</div>
-            <div class="diary__entry-summary">
-              Your Day 4 summary goes here. Reflect on your progress and what you've accomplished so far in the training.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day4')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 5</div>
-            <div class="diary__entry-date">Date: 27/6/25</div>
-            <div class="diary__entry-title">Week 1 Summary</div>
-            <div class="diary__entry-summary">
-              Your Day 5 summary goes here. Summarize the first week's key learnings and how you're progressing.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day5')">Read Full Entry</a>
-          </div>
-
-          
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 6</div>
-            <div class="diary__entry-date">Date: 30/6/25</div>
-            <div class="diary__entry-title">Training Day 6</div>
-            <div class="diary__entry-summary">
-              Your Day 6 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day6')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 7</div>
-            <div class="diary__entry-date">Date: 2/7/25</div>
-            <div class="diary__entry-title">Training Day 7</div>
-            <div class="diary__entry-summary">
-              Your Day 7 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day7')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 8</div>
-            <div class="diary__entry-date">Date: 4/7/25</div>
-            <div class="diary__entry-title">Training Day 8</div>
-            <div class="diary__entry-summary">
-              Your Day 8 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day8')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 9</div>
-            <div class="diary__entry-date">Date: 7/7/25</div>
-            <div class="diary__entry-title">Training Day 9</div>
-            <div class="diary__entry-summary">
-              Your Day 9 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day9')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 10</div>
-            <div class="diary__entry-date">Date: 9/7/25</div>
-            <div class="diary__entry-title">Training Day 10</div>
-            <div class="diary__entry-summary">
-              Your Day 10 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day10')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 11</div>
-            <div class="diary__entry-date">Date: 11/7/25</div>
-            <div class="diary__entry-title">Training Day 11</div>
-            <div class="diary__entry-summary">
-              Your Day 11 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day11')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 12</div>
-            <div class="diary__entry-date">Date: 14/7/25</div>
-            <div class="diary__entry-title">Training Day 12</div>
-            <div class="diary__entry-summary">
-              Your Day 12 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day12')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 13</div>
-            <div class="diary__entry-date">Date: 16/7/25</div>
-            <div class="diary__entry-title">Training Day 13</div>
-            <div class="diary__entry-summary">
-              Your Day 13 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day13')">Read Full Entry</a>
-          </div>
-
-          <div class="diary__entry-card">
-            <div class="diary__entry-day">Day 14</div>
-            <div class="diary__entry-date">Date: 18/7/25</div>
-            <div class="diary__entry-title">Training Day 14</div>
-            <div class="diary__entry-summary">
-              Your Day 14 summary goes here. Continue documenting your journey and key takeaways from the training program.
-            </div>
-            <a href="javascript:void(0)" class="diary__entry-button" onclick="openPDF('day14')">Read Full Entry</a>
-          </div>
-
-          <!-- Add more days as needed -->
-
-        </div>
-      </div>
-    </section>
+      <!-- Add more days as needed -->
+    </div>
+  </div>
+</section>
 
     <!-- ***** Projects & Links ***** -->
 
@@ -647,7 +531,7 @@ JS Options
     </div>
   </section>
 
-  <!-- ***** Footer ***** -->
+ <!-- ***** Footer ***** -->
 
   <footer role="contentinfo" class="footer">
     <div class="row">
@@ -675,22 +559,19 @@ JS Options
     </div>
   </footer>
 
-  <!-- PDF Viewer Modal -->
-  <div id="pdfModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="modalTitle">Diary Entry</h3>
-        <span class="close" onclick="closePDF()">&times;</span>
-      </div>
-      <div class="pdf-viewer">
-        <div class="pdf-placeholder">
-          <p>📄 PDF Viewer</p>
-          <p style="margin-top: 10px; font-size: 0.9em;">Replace with your PDF URL: &lt;iframe src="your-pdf-url" style="width: 100%; height: 100%; border: none;"&gt;&lt;/iframe&gt;</p>
-          <p style="margin-top: 15px; font-size: 0.85em;">Example: openPDF('day1') would display: &lt;iframe src="./pdfs/day1.pdf"&gt;&lt;/iframe&gt;</p>
-        </div>
-      </div>
+<!-- PDF Viewer Modal -->
+<div id="pdfModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Diary Entry</h3>
+      <span class="close" onclick="closePDF()">&times;</span>
+    </div>
+    <div class="pdf-viewer">
+      <iframe id="pdfFrame" src="" style="width:100%; height:100%; border:none;"></iframe>
     </div>
   </div>
+</div>
+
 
   <a href="#top" class="back-to-top" title="Back to Top" id="backToTop">
     <img src="./images/arrow-up.svg" alt="Back to Top" class="back-to-top__image"/>
@@ -708,11 +589,12 @@ JS Options
       // Replace the PDF placeholder with your actual PDF link
       // Example: `./pdfs/day1.pdf`
       viewer.innerHTML = `
-        <iframe 
-          src="./pdfs/${dayNumber}.pdf" 
-          style="width: 100%; height: 100%; border: none;">
-        </iframe>
-      `;
+  <iframe 
+    src="https://aurelianjavie.github.io/IIT_J/Diary/${dayNumber}.pdf" 
+    style="width: 100%; height: 100%; border: none;">
+  </iframe>
+`;
+
 
       modal.style.display = 'block';
     }
