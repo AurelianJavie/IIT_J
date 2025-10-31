@@ -38,8 +38,8 @@
       color: white;
       padding: 40px 0;
       text-align: center;
-      position: sticky;
-      top: 0;
+      /* removed sticky behavior here */
+      position: relative;
       z-index: 100;
     }
 
@@ -60,6 +60,8 @@
       margin-top: 20px;
       flex-wrap: wrap;
       gap: 15px;
+      /* removed stickiness — it will scroll naturally */
+      position: relative;
     }
 
     .nav a {
@@ -303,8 +305,7 @@
     }
   </style>
 </head>
-
-<body>
+  <body>
 
   <!-- ***** Header ***** -->
   <header class="header">
@@ -612,7 +613,8 @@
       });
     });
   </script>
-
+  
+  
 </body>
 
 </html>
